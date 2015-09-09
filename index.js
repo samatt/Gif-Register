@@ -21,18 +21,29 @@ var imgs = ['a','b','c','d'];
 io.on('connection', function (socket) {
   var addedUser = false;
 
-  socket.on('add user', function (username) {
-    socket.username = username;
-    sockets[username] = socket;
+  socket.on('add user', function () {
+    socket.username = numUsers.toString();
+    sockets[numUsers.toString()] = socket;
     ++numUsers;
     addedUser = true;
+    
+    socket.emit('login', {
+        numUsers: numUsers,
+        username : numUsers.toString()
+    });
+    socket.broadcast.emit('user joined', {
+      numUsers: numUsers
+    });
+
   });
 
   socket.on('disconnect', function () {
     if (addedUser) {
       delete sockets[socket.username];
       --numUsers;
-      console.log()
+      socket.broadcast.emit('user left', {
+        numUsers: numUsers
+      });
     }
   });
 });
@@ -58,20 +69,3 @@ function displaySocketIDs(){
   }
 }
 setInterval(displaySocketIDs,1000);
-
-  // socket.emit('login', {
-  //   numUsers: numUsers,
-  //   username : username
-  // });
-
-  // echo globally (all clients) that a person has connected
-  // socket.broadcast.emit('user joined', {
-  //   username: socket.username,
-  //   numUsers: numUsers
-  // });
-
-  // echo globally that this client has left
-  // socket.broadcast.emit('user left', {
-  //   username: socket.username,
-  //   numUsers: numUsers
-  // });

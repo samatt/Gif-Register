@@ -15,50 +15,30 @@ $(function() {
   var username;
   var connected = false;
   var typing = false;
+  var myID = 0;
   // var lastTypingTime;
   var $currentInput = $usernameInput.focus();
 
+  // var socket = io();
+
   var socket = io();
+  socket.emit('add user', username);
 
-  // Sets the client's username
-  function setUsername () {
-    username = cleanInput($usernameInput.val().trim());
-
-    // If the username is valid
-    if (username) {
-      console.log(username);
-      // Tell the server your username
-      socket.emit('add user', username);
-    }
-  }
-
-  $window.keydown(function (event) {
-    // Auto-focus the current input when a key is typed
-    if (!(event.ctrlKey || event.metaKey || event.altKey)) {
-      $currentInput.focus();
-    }
-    // When the client hits ENTER on their keyboard
-    if (event.which === 13) {
-      if (username) {
-      } else {
-        setUsername();
-      }
-    }
-  });
-
-  // Whenever the server emits 'login', log the login message
   socket.on('login', function (data) {
-    connected = true;
-    // Display the welcome message
-    var message = "Welcome to the Gif Register you are client " + data.username;
-    $("#TEST").empty();
-    $("#TEST").text(message);
-    // addParticipantsMessage(data);
+    var message = "Welcome to the Gif Register you are client " + data.username + " of " +data.numUsers ;
+    console.log('login');
+    myID = data.username
+    console.log(myID);
+    $("#ID").empty();
+    $("#ID").text(message);
   });
 
   // Whenever the server emits 'user joined', log it in the chat body
   socket.on('user joined', function (data) {
-    console.log(data.username + ' joined');
+     var message = "User added to the Gif Register you are now client " + myID + " of " +data.numUsers ;
+    console.log(myID);
+    $("#ID").empty();
+    $("#ID").text(message);
   });
 
   socket.on('new image', function (data) {
@@ -68,7 +48,10 @@ $(function() {
 
   // Whenever the server emits 'user left', log it in the chat body
   socket.on('user left', function (data) {
-    console.log("USERS LEFT");
+     var message = "User removed from the Gif Register you are now client " + myID + " of " +data.numUsers ;
+    console.log(data);
+    $("#ID").empty();
+    $("#ID").text(message);
   });
 
 
@@ -78,3 +61,29 @@ $(function() {
   }
 
 });
+
+// // Sets the client's username
+// function setUsername () {
+//   username = cleanInput($usernameInput.val().trim());
+
+//   // If the username is valid
+//   if (username) {
+//     console.log(username);
+//     // Tell the server your username
+//     socket.emit('add user', username);
+//   }
+// }
+
+// $window.keydown(function (event) {
+//   // Auto-focus the current input when a key is typed
+//   if (!(event.ctrlKey || event.metaKey || event.altKey)) {
+//     $currentInput.focus();
+//   }
+//   // When the client hits ENTER on their keyboard
+//   if (event.which === 13) {
+//     if (username) {
+//     } else {
+//       setUsername();
+//     }
+//   }
+// });
