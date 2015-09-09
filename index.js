@@ -16,7 +16,7 @@ var numUsers = 0;
 var sockets = {};
 
 
-var imgs = ['a','b','c','d'];
+var imgs = ['a.jpg','b.jpg','c.jpg','d.jpg'];
 
 io.on('connection', function (socket) {
   var addedUser = false;
@@ -59,13 +59,25 @@ function displaySocketIDs(){
       // console.log(Object.keys(sockets).indexOf(i.toString()) )
       var idx = i.toString();
       if(Object.keys(sockets).indexOf(idx) >= 0){
-
+// name: +sockets[idx].username+".jpg"
         console.log('Client ' + idx + "exists");
+        console.log('Client ' + imgs[i] + "exists");
         sockets[idx].emit('new image',{
-          name: "image_"+sockets[idx].username
+          name:imgs[i]
         })
       }
     };
   }
 }
 setInterval(displaySocketIDs,1000);
+
+function udpateImages(){
+  imgs.pop();
+  var rand = Math.random(1)*100;
+  console.log(rand);
+  var name  = parseInt(rand).toString() + ".jpg";
+  imgs.unshift(name);
+  console.log(imgs);
+
+}
+setInterval(udpateImages,1500);

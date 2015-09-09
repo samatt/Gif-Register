@@ -61,29 +61,3 @@ $(function() {
   }
 
 });
-
-// // Sets the client's username
-// function setUsername () {
-//   username = cleanInput($usernameInput.val().trim());
-
-//   // If the username is valid
-//   if (username) {
-//     console.log(username);
-//     // Tell the server your username
-//     socket.emit('add user', username);
-//   }
-// }
-
-// $window.keydown(function (event) {
-//   // Auto-focus the current input when a key is typed
-//   if (!(event.ctrlKey || event.metaKey || event.altKey)) {
-//     $currentInput.focus();
-//   }
-//   // When the client hits ENTER on their keyboard
-//   if (event.which === 13) {
-//     if (username) {
-//     } else {
-//       setUsername();
-//     }
-//   }
-// });
