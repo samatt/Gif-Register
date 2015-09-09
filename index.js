@@ -16,7 +16,7 @@ var numUsers = 0;
 var sockets = {};
 
 
-var imgs = ['a.jpg','b.jpg','c.jpg','d.jpg'];
+var imgs = ['001.png','002.png','003.png','004.png'];
 
 io.on('connection', function (socket) {
   var addedUser = false;
@@ -55,13 +55,10 @@ function displaySocketIDs(){
     var numClients = sockets.length;
 
     for (var i = 0; i < numImages; i++) {
-      // console.log(Object.keys(sockets),i.toString());
-      // console.log(Object.keys(sockets).indexOf(i.toString()) )
       var idx = i.toString();
       if(Object.keys(sockets).indexOf(idx) >= 0){
-// name: +sockets[idx].username+".jpg"
         console.log('Client ' + idx + "exists");
-        console.log('Client ' + imgs[i] + "exists");
+        // console.log('Client ' + imgs[i] + "exists");
         sockets[idx].emit('new image',{
           name:imgs[i]
         })
@@ -80,4 +77,4 @@ function udpateImages(){
   console.log(imgs);
 
 }
-setInterval(udpateImages,1500);
+// setInterval(udpateImages,1500);

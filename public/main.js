@@ -1,28 +1,13 @@
 $(function() {
-  var FADE_TIME = 150; // ms
-  var TYPING_TIMER_LENGTH = 400; // ms
-  var COLORS = [
-    '#e21400', '#91580f', '#f8a700', '#f78b00',
-    '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
-    '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
-  ];
 
-  // Initialize varibles
-  var $window = $(window);
-  var $usernameInput = $('.usernameInput'); // Input for username
-
-  // Prompt for setting a username
-  var username;
-  var connected = false;
-  var typing = false;
   var myID = 0;
   // var lastTypingTime;
-  var $currentInput = $usernameInput.focus();
+  // var $currentInput = $usernameInput.focus();
 
   // var socket = io();
 
   var socket = io();
-  socket.emit('add user', username);
+  socket.emit('add user');
 
   socket.on('login', function (data) {
     var message = "Welcome to the Gif Register you are client " + data.username + " of " +data.numUsers ;
@@ -44,6 +29,7 @@ $(function() {
   socket.on('new image', function (data) {
     $("#TEST").empty();
     $("#TEST").text(data.name);
+    $("#my_img").attr("src", "imgs/"+data.name);
   });
 
   // Whenever the server emits 'user left', log it in the chat body
