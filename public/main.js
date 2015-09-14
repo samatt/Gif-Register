@@ -29,13 +29,14 @@ $(function() {
   socket.on('new image', function (data) {
     $("#TEST").empty();
     $("#TEST").text(data.name);
-    $("#my_img").attr("src", "imgs/"+data.name);
+    $("#my_img").attr("src", data.name);
   });
 
   // Whenever the server emits 'user left', log it in the chat body
   socket.on('user left', function (data) {
-     var message = "User removed from the Gif Register you are now client " + myID + " of " +data.numUsers ;
-    console.log(data);
+     var message = "User removed from the Gif Register you are now client " + data.myID + " of " +data.numUsers ;
+    myID =data.myID;
+    // console.log(data);
     $("#ID").empty();
     $("#ID").text(message);
   });
