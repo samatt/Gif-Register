@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # echo `pwd`
-DIR=`pwd`"/imgs/*.png"
-
+# DIR=`pwd`"/imgs/*.png"
+DIR=`pwd`"/Processing/gifCapture_001/*.png"
 
 file_name=$(date "+%Y.%m.%d-%H.%M.%S").gif
 # echo "Current Time : $current_time"

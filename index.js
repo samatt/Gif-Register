@@ -23,6 +23,11 @@ var socketList = [];
 
 
 var imgs = fs.readdirSync(__dirname+"/public/gifs");
+
+if(imgs.indexOf(".DS_Store") >= 0){
+  var x = imgs.indexOf(".DS_Store");
+  imgs.splice(x,1);
+} 
 console.log("Existing Gifs:");
 console.log(imgs);
 app.get('/capture', function(req, res) {
@@ -44,6 +49,12 @@ app.get('/capture', function(req, res) {
       var diff = _.difference(new_imgs, imgs) ;
 // Similar to without, but returns the values from array that are not present in the other arrays.
       // console.log();
+      if(diff.indexOf(".DS_Store") >= 0){
+        var x = diff.indexOf(".DS_Store");
+          diff.splice(x,1);
+      } 
+
+      console.log(diff);
       if(diff.length === 1){
         imgs.unshift(diff[0])
       }
@@ -64,10 +75,12 @@ app.get('/capture', function(req, res) {
 
 io.on('connection', function (socket) {
   var addedUser = false;
-
+console.log("New User!");
   socket.on('add user', function () {
     // socket.username = numUsers.toString();
     // sockets[numUsers.toString()] = socket;
+    
+    // console.log()
     socketList.push(socket);
     ++numUsers;
     addedUser = true;
@@ -127,10 +140,37 @@ function updateImages(){
           name: "gifs/"+imgs[i]
         });
     };
-
   }
+}
+
+function udpateImages(){
+  imgs.pop();
+  var rand = Math.random(1)*100;
+  console.log(rand);
+  var name  = parseInt(rand).toString() + ".jpg";
+  imgs.unshift(name);
+  console.log(imgs);
 
 }
+
+function findWithAttr(array, attr, value) {
+    for(var i = 0; i < array.length; i += 1) {
+        if(array[i][attr] === value) {
+            return i;
+        }
+    }
+}
+
+// var sortedDates = dates.sort(function (var1, var2) { 
+//    var a= new Date(var1), b = new Date(var2);
+//     if (a > b)
+//       return 1;
+//     if (a < b)
+//       return -1;
+   
+//     return 0;
+// });
+// setInterval(udpateImages,1500);
 
 // function displaySocketIDs(){
 
@@ -151,23 +191,3 @@ function updateImages(){
 //   }
 // }
 // setInterval(displaySocketIDs,1000);
-
-function udpateImages(){
-  imgs.pop();
-  var rand = Math.random(1)*100;
-  console.log(rand);
-  var name  = parseInt(rand).toString() + ".jpg";
-  imgs.unshift(name);
-  console.log(imgs);
-
-}
-
-function findWithAttr(array, attr, value) {
-    for(var i = 0; i < array.length; i += 1) {
-        if(array[i][attr] === value) {
-            return i;
-        }
-    }
-}
-
-// setInterval(udpateImages,1500);
